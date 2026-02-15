@@ -20,8 +20,6 @@ The following directory structure is **mandatory** to ensure:
 -   Correct Python module resolution
 -   Clean separation of concerns
 
-```{=html}
-<!-- -->
 ```
     ├── app.py                  # Serving Layer (Flask App)
     ├── model_setup.py          # Provisioning Layer (Model Training)
@@ -30,7 +28,7 @@ The following directory structure is **mandatory** to ensure:
     ├── requirements.txt        # Python Dependencies
     ├── docker-compose.yml      # Multi-Service Orchestration
     ├── data/                   # Baseline Data Storage
-    │   └── loan_baseline.csv
+    │   └── baseline_data.csv
     ├── models/                 # Model Artifacts
     │   └── loan_model.joblib
     ├── templates/              # Frontend UI
@@ -40,6 +38,9 @@ The following directory structure is **mandatory** to ensure:
             └── dashboards/
                 ├── dashboard.yaml
                 └── dashboard.json
+            └── datasources/
+                ├── datasource.yaml
+               
 
 ------------------------------------------------------------------------
 
@@ -73,7 +74,7 @@ EXPOSE 8000
 CMD ["python", "app.py"]
 ```
 
-### 🔎 Why This Dockerfile Structure?
+### Why This Dockerfile Structure?
 
 -   Uses lightweight `python:3.10-slim`
 -   Optimized layer caching
@@ -82,7 +83,7 @@ CMD ["python", "app.py"]
 
 ------------------------------------------------------------------------
 
-# 🛠 3. Model Migration Guide (Diabetes → Loan Model)
+# 🛠 3. Model Migration Guide (Loan Model -> other model)
 
 When switching to a new model, update **three key layers**.
 
@@ -94,13 +95,13 @@ When switching to a new model, update **three key layers**.
 
 Define feature set and export baseline dataset for drift monitoring.
 
-### Required Changes
+### Required Changes (example using loan model)
 
 ``` python
 features = ['Income', 'LoanAmount', 'CreditHistory']
 
 # Export baseline dataset for monitoring
-X[features].to_csv('data/loan_baseline.csv', index=False)
+X[features].to_csv('data/baseline_data.csv', index=False)
 
 # Save trained model
 joblib.dump(model, 'models/loan_model.joblib')
@@ -117,10 +118,10 @@ Ensure UI inputs match model feature schema.
 ### Initialize Monitoring SDK
 
 ``` python
-monitor = MLExporter(port=8000, baseline_path='data/loan_baseline.csv')
+monitor = MLExporter(port=8000, baseline_path='data/baseline_data.csv')
 ```
 
-### Map UI Inputs to DataFrame
+### Map UI Inputs to DataFrame (example using loan model)
 
 ``` python
 input_data = [
@@ -141,7 +142,7 @@ df = pd.DataFrame([input_data],
 
 Update drift logic and monitoring labels.
 
-### Update Drift Index (LoanAmount → Index 1)
+### Update Drift Index (LoanAmount → Index 1) (example using loan model)
 
 ``` python
 def check_drift_and_features(self, live_data):
@@ -165,7 +166,7 @@ Run locally:
 This creates:
 
 -   `models/loan_model.joblib`
--   `data/loan_baseline.csv`
+-   `data/baseline_data.csv`
 
 ------------------------------------------------------------------------
 
