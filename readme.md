@@ -185,39 +185,26 @@ This launches:
 
 ## Step 3: Access Services
 
-  ---------------------------------------------------------------------------------------
-  Service                     URL                             Purpose
-  --------------------------- ------------------------------- ---------------------------
-  Loan Predictor UI           http://localhost:5000           Submit prediction &
-                                                              feedback
+| Service               | URL                           | Purpose                                   |
+|-----------------------|-------------------------------|-------------------------------------------|
+| Loan Predictor UI     | http://localhost:5000        | Submit predictions and provide feedback   |
+| Metrics Stream        | http://localhost:8000/metrics| View raw Prometheus metrics               |
+| Prometheus UI         | http://localhost:9090        | Query and analyze metrics manually        |
+| Grafana Dashboard     | http://localhost:3000        | Visual monitoring and dashboard insights  |
 
-  Metrics Stream              http://localhost:8000/metrics   View raw Prometheus metrics
-
-  Prometheus UI               http://localhost:9090           Query metrics manually
-
-  Grafana Dashboard           http://localhost:3000           Visual monitoring                                                            
-  ---------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+---
 
 # 5. Metrics & Visualization Strategy
 
-The monitoring system groups metrics into four quadrants:
+The monitoring system groups metrics into four key quadrants:
 
-  ------------------------------------------------------------------------
-  Category        Dashboard Panels            Mathematical Basis
-  --------------- --------------------------- ----------------------------
-  ML Quality      F1-Score, Precision, Recall F1 = 2 × (Precision ×
-                                              Recall) / (Precision +
-                                              Recall)
+| Category      | Dashboard Panels                    | Mathematical / Technical Basis |
+|--------------|-------------------------------------|---------------------------------|
+| ML Quality   | F1-Score, Precision, Recall         | F1 = 2 × (Precision × Recall) / (Precision + Recall) |
+| Data Drift   | KS-Score                            | Dₙ,ₘ = sup\|F₁(x) − F₂(x)\| (Kolmogorov–Smirnov statistic) |
+| Operational  | Latency Histogram, Error Count      | HTTP request duration tracking and error rate calculation |
+| Resource     | CPU, RAM, Disk Usage                | Real-time system metrics via `psutil` |
 
-  Data Drift      KS-Score                    Dₙ,ₘ = sup(x)
-
-  Operational     Latency Histogram, Error    Request duration tracking
-                  Count                       
-  
-  Resource        CPU, RAM, Disk              psutil real-time metrics
-  ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 
@@ -246,11 +233,11 @@ Inside `dashboard.json`:
 
 ### Trigger Drift Alert
 
-Input an extremely high LoanAmount (e.g., 900000)
+- Input an extremely high LoanAmount (e.g., 900000)
 
 ### Trigger Accuracy Drop
 
-Provide incorrect feedback label intentionally.
+- Provide incorrect feedback label intentionally.
 
 ------------------------------------------------------------------------
 
