@@ -1,0 +1,51 @@
+# Python Environment
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ML Models & Data
+models/*.joblib
+models/*.pkl
+models/*.h5
+data/*.csv
+!data/baseline_data.csv  # Keep the baseline file as it's needed for the app
+
+# OS & IDE Specific 
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker & Logs
+*.log
+docker-compose.override.yml
+.docker/
+
+# Environment Variables
+.env
+.env.local
+
+# Ignore all CSV files in the data folder
+data/*.csv
+!data/baseline_data.csv

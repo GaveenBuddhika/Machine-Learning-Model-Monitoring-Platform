@@ -1,0 +1,12 @@
+apiVersion: 1
+
+providers:
+  - name: 'ML-Monitoring-Dashboard-v2' # give any name
+    orgId: 1
+    folder: 'ML Projects'           # folder name in grafana UI
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      # container path
+      path: /etc/grafana/provisioning/dashboards

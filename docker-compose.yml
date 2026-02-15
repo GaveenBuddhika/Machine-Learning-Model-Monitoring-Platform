@@ -1,28 +1,53 @@
 version: '3.8'
 
 services:
+  # 1. Machine Learning Application (Diabetes Model)
   ml-app:
     build: .
-    image: python:3.9-slim
-    volumes:
-      - .:/app
-    working_dir: /app
-    entrypoint: >
-      sh -c "pip install -r requirements.txt && python app.py"
+    container_name: ml_monitoring_app
     ports:
-      - "5000:5000" # UI Port
-      - "8000:8000" # Metrics Port
+      - "5000:5000"  # Flask Web UI
+      - "8000:8000"  # Prometheus Metrics Endpoint
+    volumes:
+      - .:/app       # Hot-reload for code
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - monitoring-network
 
+  # 2. Prometheus Service
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
+    container_name: prometheus_service
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    networks:
+      - monitoring-network
 
+  # 3. Grafana Service (Updated with Volumes)
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
+    container_name: grafana_service
     ports:
       - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning #map settings to container
+      # This ensures your dashboards are saved even if the container stops
+      - grafana_data:/var/lib/grafana
+      # This loads your datasource and dashboard configs automatically
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - monitoring-network
+
+# Essential: Defining the volume for Grafana persistence
+volumes:
+  grafana_data:
+
+networks:
+  monitoring-network:
+    driver: bridge
