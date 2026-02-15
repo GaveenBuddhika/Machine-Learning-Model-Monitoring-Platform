@@ -195,8 +195,7 @@ This launches:
 
   Prometheus UI               http://localhost:9090           Query metrics manually
 
-  Grafana Dashboard           http://localhost:3000           Visual monitoring
-                                                              (admin/admin)
+  Grafana Dashboard           http://localhost:3000           Visual monitoring                                                            
   ---------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -216,7 +215,7 @@ The monitoring system groups metrics into four quadrants:
 
   Operational     Latency Histogram, Error    Request duration tracking
                   Count                       
-
+  
   Resource        CPU, RAM, Disk              psutil real-time metrics
   ------------------------------------------------------------------------
 
