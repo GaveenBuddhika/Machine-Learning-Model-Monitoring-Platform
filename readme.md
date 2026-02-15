@@ -36,11 +36,11 @@ The following directory structure is **mandatory** to ensure:
     └── grafana/
         └── provisioning/
             └── dashboards/
-                ├── dashboard.yaml
-                └── dashboard.json
+                ├── dashboard.yaml      # Dashboard provisioning config
+                └── dashboard.json      # grafana dashboard template
             └── datasources/
-                ├── datasource.yaml
-               
+                ├── datasource.yaml     # Prometheus datasource config
+
 ```
 ------------------------------------------------------------------------
 
